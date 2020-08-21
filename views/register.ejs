@@ -1,0 +1,73 @@
+<% include ./partials/header %>
+<% if (locals.errors) { %>
+  <ul>
+    <% Object.values(errors).forEach(function(error){ %>
+    <li><%= error.msg %></li>
+    <% }); %>
+  </ul>
+<% } %>
+  <h1 style="text-align: center">Sign Up</h1>
+  <div class="row justify-content-center">
+    <div class="col-xs-12 col-md-6 col-lg-8">
+      <form action="/register" method="POST">
+        <div class="form-group">
+          <label for="username">Account type * </label>
+          <select  class="form-control mb-3" name = userType  id="userType" >
+            <option> Private </option>
+            <option> Business </option>  
+          </select> 
+        </div>
+        <div class="form-group">
+          <label for="username">User Name * </label>
+          <input id="username" class="form-control mb-3" type="text" name="username" required/>
+        </div>
+        <div class="form-group">
+          <label for="password">Password *</label>
+          <input  id="inputPassword"  class="form-control" type="password" name="password" required/>
+        </div>
+        <div class="form-group">
+          <label for="firstName">First/Company Name *</label>
+          <input id="inputFirstName" class="form-control" type="text" name="inputFirstName" required/>
+        </div>
+        <div class="form-group">
+          <label for="lastName">Last Name </label>
+          <input id="inputLastName" class="form-control" type="text" name="inputLastName" required/>
+        </div>
+        <div class="form-group">
+          <label for="username">Email *</label>
+          <input  id="inputEmail" class="form-control" type="email" name="email" required/>
+        </div>
+        <div class="form-group">
+          <label for="username">Phone *</label>
+          <input id="phone" class="form-control" type="tel" name="phone"/>
+        </div>
+        <div class="form-group">
+          <label for="username">A bit about yourself</label>
+          <textarea  id="bio" class="form-control" type="text" rows = 4 name="bio" ></textarea>
+        </div>
+        <div class="form-group">
+          <label for="avatar">Profile Photo <span>(Optional)</span> </label>
+          <input id="inputAvatar" class="form-control" type="text" name="avatar" placeholder="avatar url" autocomplete="off" />
+        </div>
+        <div class="form-group">
+        <button  id="singlebutton" name="signup" type="submit"  class="btn btn-md btn-primary btn-block">Sign Up!</button>
+      </div>
+      <hr>
+      <a href="/cloudcanineads">Back</a>
+      <hr>
+      <div class="form-group">
+        <label for="adminCode">Admin Code <span>(Optional)</span> </label>
+        <input class="form-control"  id="inputAdminCode"  type="password" name="adminCode" placeholder="Admins Only" autocomplete="off" />
+      </div>
+    </form>
+  </div>
+<% include ./partials/footer %>
+
+<script>
+ function activateAutosearch() {
+        const input = document.getElementById('location');
+        const autocomplete = new google.maps.places.Autocomplete(input);
+    }
+</script>
+
+

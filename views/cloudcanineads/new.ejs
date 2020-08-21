@@ -1,0 +1,157 @@
+<% include ../partials/header %>
+
+<style>
+
+input[type=text], select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+h2 {
+  display: inline;
+  background-color: skyblue  }
+
+</style>
+
+    <div class="row justify-content-center">
+        <div class="col-xs-12 col-md-6 col-lg-8">
+        </div>
+        <div class="col-xs-12 col-md-6 col-lg-8">
+            <form action="/cloudcanineads" method="POST" enctype="multipart/form-data">
+            <hr>
+            <div class="form-group">
+              <div class="input-group-prepend" id="inputGroup-sizing-large">
+                <select class="form-control" id="categoryName" name="categoryName" onchange="onCategoryChange(this)" required>
+                  <option>select the category that best matches your listing</option>
+                    <%for(let [name, value] of Object.entries(categoryData)){%>
+                    <% if(value.show == true ) { %>
+                  <option value="<%= name %>"><%= name %></option>
+                      <% } %>
+                      <%}%>
+                </select>
+              </div>
+              <br>
+              <select class="form-control" id="subcategoryName" name="subcategoryName" required>
+                <option> Choose under what sub-category </option>
+              </select>
+              <br>
+            <!-- START OF MORE DETAILS FOR DOG CATEGORY -->
+              <div class="form-group">
+                <select class="form-control" id="seeAnotherFieldGroup">
+                  <label for="details">Do you want to add details? </label>
+                      <option value="no">No</option>
+                      <option value="Yes">Yes </option>
+                </select>
+              </div>
+              <div class="form-group" id="otherFieldGroupDiv">
+                <div class="row">
+                  <div class="col-6">
+                    <select class="form-control" name = sex id="otherField1" >
+                        <option value= "new "> Male </option>
+                        <option value= "used"> Female </option>  
+                    </select> <br>
+                  </div>
+                  <br>
+                  <div class="col-6">
+                    <select class="form-control" name = colour id="otherField4" >
+                      <option> Black </option> 
+                      <option> Blue </option>
+                      <option> Brown </option> 
+                      <option> Cream </option>
+                      <option> Gold </option>
+                      <option> Gray </option> 
+                      <option> Red </option>
+                      <option> White </option>
+                      <option> Yellow </option>     
+                    </select>
+                    </div>
+                  <div class="col-6">
+                    <input type="date" class="form-control w-100"  placeholder = "Date of birthdate Expiry" name = birthdate id="otherField6">
+                  </div>
+                </div>
+              </div>
+              <!-- END OF MORE DETAILS FOR DOG CATEGORY CATEGORY -->
+              <div class="form-group">
+                <input class="form-control" type="text" id="title" abbr title="this field is required"  name="title" placeholder = "Title" required> %>
+              </div>
+              <div class="form-group"> 
+                <input class="form-control" type="file" id="image" abbr title="this field is required" placeholder="You can add 5 photos for free" name="image" accept="image/*" required multiple>
+              </div> 
+              <div class="form-group">
+                <textarea  placeholder="Add information about the advert ..."  abbr title="this field is required" class="form-control controls" rows="6" col="3" type="text" name="description" id="description"  required> </textarea>
+              </div>
+              <div class="form-group">
+                <input id="location" class="form-control controls" type="text" abbr title="this field is required"  name="location"  placeholder="Enter a location here" required>
+              </div>
+              <div class="form-group">
+                <input class="form-control" type="number" name="price" id="price" placeholder="Enter a price here" step="1.00" required>
+              </div>
+              <div class="form-group">
+                <button class="btn btn-lg btn-primary btn-block">Submit!</button>
+              </div>
+            </form>
+            <a href="/cloudcanineads">Go Back</a>
+          </div>
+        </div>
+        <script>
+
+function showPreview(event){
+  if(event.target.files.length > 0){
+    var src = URL.createObjectURL(event.target.files[0]);
+    var preview = document.getElementById("file-ip-1-preview");
+    preview.src = src;
+    preview.style.display = "block";
+  }
+}
+
+  function activateAutosearch() {
+        const input = document.getElementById('location');
+        const autocomplete = new google.maps.places.Autocomplete(input);
+    }
+    function onCategoryChange(event){
+        console.log("event ",event.value)
+        var selectedCategory  = event.value;
+        var jsonCategoryInfo = <%- JSON.stringify(categoryData) %>;
+        var subCategoryList = (jsonCategoryInfo[selectedCategory] && jsonCategoryInfo[selectedCategory]['subCat'] ) || [];
+        var subCatOptionList = '';
+        for(var ind = 0;ind < subCategoryList.length;ind++){
+            subCatOptionList += `<option value="${subCategoryList[ind]}">${subCategoryList[ind]}</option>`;
+        }
+
+        $('#subcategoryName').html(subCatOptionList);
+
+               
+         $("#seeAnotherFieldGroup").change(function() {
+            if ($(this).val() == "Yes") {
+                $('#otherFieldGroupDiv').show();
+                } else {
+                    $('#otherFieldGroupDiv').hide();   
+                }
+                });
+                $("#seeAnotherFieldGroup").trigger("change");
+
+
+                   // hide otherfields div when loading form
+    
+                $("#categoryName").change(function() {
+                if ($(this).val() == "Events" || $(this).val() == "Services" || $(this).val() == "Products") {
+                    $('#otherFieldGroupDiv').hide();
+                    $("#seeAnotherFieldGroup").hide();
+                    $('#price').hide();
+                } 
+                else {
+                    $('#otherFieldGroupDiv').show();
+                    $("#seeAnotherFieldGroup").show();
+                }
+                });
+               
+
+    }
+    </script>
+    <script
+    type="text/javascript"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUi8tYHItUWp7QRnCZzYaZqiLOr1-wwP0&libraries=places&callback=activateAutosearch">
+    </script>
+<% include ../partials/footer %>

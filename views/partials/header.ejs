@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Cloud Canine</title>
+      <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous">
+      <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+      <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+      <link rel="stylesheet" href="/stylesheets/main.css">
+    </head>
+
+    <style>
+    .row:before, .row:after {
+      display: flex !important;
+      }
+      </style>
+      <body>
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-6">
+          <a class="navbar-brand" href="/"><i class="fas fa-dog"> </i> Cloud Canine</a>
+          <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarCollapse"
+          aria-controls="navbarCollapse"
+          aria-expanded="false"
+          aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+          </button>
+          
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav ">
+              <li class="nav-item <%= typeof page !== 'undefined' && page === 'cloudcanineads' ? 'active' : '' %>">
+              <a href="/cloudcanineads" class="nav-link"> Home</a>
+              </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li class="nav navbar-nav navbar-auto">
+              <a class="nav-link" href="/cloudcanineads/new"><i class="fas fa-plus"></i> Post a new listing </a>
+              </li>
+            <% if(!currentUser){ %>
+              <li class="nav-item <%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>">
+                <a href="/login" class="nav-link"><i class="fas fa-sign-in-alt"></i> Login</a>
+              </li>
+              <li class="nav-item <%= typeof page !== 'undefined' && page === 'register' ? 'active' : '' %>">
+                <a href="/register" class="nav-link"><i class="fas fa-user-plus"></i> Sign Up</a>
+              </li>
+            <% } else { %>
+      <!-- notification -->
+              <li class="dropdown">
+                <a
+                href="#"
+                class="dropdown-toggle"
+                data-toggle="dropdown"
+                role="button"
+                aria-haspopup="true"
+                aria-expanded="false"
+                >Notifications
+                  <span class="badge">
+                  <%= notifications.length %>
+                  </span>
+                </a>
+                <ul class="dropdown-menu">
+                  <% notifications.forEach(function(notification) { %>                          
+                    <li>
+                      <a href="/notifications/<%= notification.id %>">
+                      <%= notification.username%> Post a new ad
+                      </a>
+                    </li>
+                    <% }); %>
+                </ul>
+                <li class="dropdown top-level" id="menu">
+                  <a
+                  class="dropdown-toggle"
+                  data-toggle="dropdown"
+                  href="#"> Signed In As <%= currentUser.username %>
+                    <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/users/<%= currentUser._id %>">View Profile</a></li>
+                      <div class="dropdown-divider"></div>
+                      <li><a href="/users/<%= currentUser._id %>/edit">Edit Profile</a></li>
+                      <li><a href="/change">Change Password</a></li>
+                  </ul>
+                </li>  
+                <li class="nav-item">
+                  <a href="/logout" class="nav-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </li>
+            <% } %>
+        </ul>
+      </div>
+    </nav>
+ 
+    <% if(error && error.length > 0){ %>
+      <div class="container">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <%= error %>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <% } else if(success && success.length > 0){%>
+      <div class="container">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <%= success %>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <% } %>
+    <div class="container">

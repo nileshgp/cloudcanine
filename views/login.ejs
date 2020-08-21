@@ -1,0 +1,27 @@
+<% include ./partials/header %>
+  <h1 style="text-align: center">Login to your Cloud Canine </h1>
+  <div class="row justify-content-center">
+    <div class="col-xs-6 col-md-3 col-lg-5">
+      <form class="form-signin" action="/login" method="POST">
+        <div class="form-group">
+          <label for="username">User Name</label>
+          <input type="text" id="inputUsername" class="form-control mb-3" name="username" placeholder="Username" required autofocus>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="inputPassword" class="form-control mb-3" name="password" placeholder="Password" required>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <div class="form-group">
+          <hr>
+          <p>New to Cloud Canine? <a href="/register">Sign up</a></p>
+        </div>
+        <p><a href="/cloudcanineads">Go Back</a></p>
+        <p><a href="/forgot">Forgot Password</a></p>
+      </form>
+    </div>
+  </div>
+
+
+    
+<% include ./partials/footer %>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title> Cloud Canine | Discover dog services, products and dogs</title>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+                          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+                        crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+          integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous">
+        </script>
+    </head>
+    <style>
+
+    .jumbotron{
+    background-image: url('https://images.unsplash.com/photo-1561037404-61cd46aa615b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80');
+    background-size: cover;
+    height: 100%;
+    width:100%;  
+    }
+
+    .textintro {
+    background: rgba(0.2, 0, 0, 0.1);
+    padding: 30px; 
+    }
+
+    </style>
+
+    <body>
+        <div class="container">
+        <% if(error && error.length > 0){ %>
+            <div class="alert alert-danger" role="alert">
+            <%= error %>
+            </div>
+            <% } %>
+            <% if(success && success.length > 0){ %>
+            <div class="alert alert-success" role="alert">
+            <%= success %>
+            </div>
+        <% } %>
+        </div>
+        <div id="intro" class="view">
+            <div class="mask rgba-black-strong">
+                <header class="jumbotron jumbotron-fluid" >
+                    <div class="container-fluid d-flex align-items-center justify-content-center">
+                        <div class="row d-flex justify-content-left text-center">
+                            <div class="textintro">
+                                <h1 class="display-4 font-weight-bold pt-8 mb-8" style = "color:white"><i class="fas fa-dog"></i>
+                                    Welcome To Cloud Canine </h1>
+                                <h4 class="white-text my-4" style = "color:white">Discover Dogs, Doggy Products and Dog Events</h4>
+                                <a class="btn btn-primary btn-large-white" href="/cloudcanineads/new">Post a new listing</a>
+                                <a class="btn btn-primary btn-large-white" href="/cloudcanineads">Browse Cloud Canine</a>
+                                <p>
+                                <form id="subcategory-form"
+                                  action="/cloudcanineads/searchdata"
+                                  METHOD="GET">
+                                    <div class="form-group">
+                                        <input
+                                        type="text"
+                                        class="form-control"
+                                        id="subcategory-form-input"
+                                        name="search"
+                                        placeholder="Search">
+                                    </div>
+                                </form>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+            </div>
+        </div>
+        <main class="mt-5">
+            <div class="container">
+                <section id="best-features" class="text-center">
+                <h2 class="mb-5 font-weight-bold">A little more about Cloud Canine:</h2>
+                    <div class="row d-flex justify-content-center mb-4">
+                        <div class="col-md-8">
+                            <p class="grey-text">Cloud Canine is doggy heaven with all your dog needs met. 
+                                             Find Services, dogs: buyers/sellers. 
+                                             Find dog products.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-5">
+                            <i class="fa fa-paw fa-4x orange-text"></i>
+                            <h4 class="my-4 font-weight-bold">Buy/Sell Dogs</h4>
+                            <p class="grey-text">Are you a breeder looking to sell your pups? 
+                                                Or are you a looking to pull the trigger on a new pal?
+                                                No matter your needs we've got you covered.
+                            </p>
+                        </div>
+                        <div class="col-md-4 mb-1">
+                            <i class="fa fa-bone fa-4x "></i>
+                            <h4 class="my-4 font-weight-bold">Doggy Products</h4>
+                            <p class="grey-text">We have the full array of different dog products for your dog needs.
+                            </p>
+                        </div>
+                        <div class="col-md-4 mb-1">
+                            <i class="fa fa-calendar-alt fa-4x orange-text"></i>
+                            <h4 class="my-4 font-weight-bold">Browse Dog Events</h4>
+                            <p class="grey-text">All types of dogs shows, from agility courses, dog expedition, dog-walks.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+        <footer id="footer" class="footer navbar-expand justify-content-center bg-dark mb-6">
+            <div class="footer-copyright text-center py-3">
+                <p class="mb-0 mt-0">
+                    <a id="footer-cloudcaninead-name" style="color:white"
+                        href="https://www.linkedin.com/in/ridhayvanza/">Cloud Canine ©<%= moment().year() %>
+                </p>
+                <p class="mb-0 mt-0">
+                    <strong style="font-size: 14px">
+                        <span style="color:white">createdBy</span><span style="color: gray">:</span>
+                        <span style="color:white"> "Nilesh Patel"</span><span style="color:gray">;</span>
+                    </strong>
+                    </a>
+                </p>
+        </footer>
+    </body>
+</html>

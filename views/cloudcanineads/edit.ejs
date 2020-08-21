@@ -1,0 +1,57 @@
+<% include ../partials/header %>
+<% include ../partials/errorhelper %>
+<div class="form-group">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 text-center">
+                <h1 style="text-align: center">Edit <%= cloudcaninead.name %></h1>
+            </div>
+            <div class="col-xs-12 col-md-6 col-lg-4">
+                <form action="/cloudcanineads/<%= cloudcaninead._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="title">Title:</label>
+                        <input class="form-control" type="text" id="title" name="cloudcaninead[title]"
+                            value="<%= cloudcaninead.title %>">
+                    </div>
+                    <div class="form-group">
+                        <label for="image">Image :</label>
+                        <input class="form-control" type="file" name="image" id="image" accept="image/*"
+                            value="<%= cloudcaninead.image %>" multiple>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description :</label>
+                        <textarea class="form-control" type="text" col="6" rows="4"
+                            name="cloudcaninead[description]"><%= cloudcaninead.description %></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Location :</label>
+                        <input id="location" class="form-control control" type="text" name="cloudcaninead[location]"
+                            value="<%= cloudcaninead.location %>">
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Price :</label>
+                        <input class="form-control" type="number" name="cloudcaninead[price]" id="description"
+                            value="<%= cloudcaninead.price %>" min="0.00" step="1.00">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-lg btn-primary btn-block">Update post </button>
+                    </div>
+                </form>
+                <a href="/cloudcanineads">Go Back</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function activateAutosearch() {
+        const input = document.getElementById('location');
+        const autocomplete = new google.maps.places.Autocomplete(input);
+    }
+</script>
+
+<script
+type="text/javascript"
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUi8tYHItUWp7QRnCZzYaZqiLOr1-wwP0&libraries=places&callback=activateAutosearch">
+</script>
+<% include ../partials/footer %>

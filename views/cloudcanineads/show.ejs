@@ -1,0 +1,392 @@
+<% include ../partials/header %>
+  <style>
+    .row:before,
+    .row:after {
+      display: flex !important;
+    }
+  </style>
+  
+  <div class="col-md-9">
+    <div class="thumbnail">
+      <div
+      id="carouselExampleIndicators"
+      class="carousel slide"
+      data-interval="false"
+      >
+        <ol class="carousel-indicators">
+          <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+          <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+          <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img class="d-block w-100" src="<%= cloudcaninead.image[0]%>" alt="First slide">
+        </div>
+        <div class="carousel-item">
+          <img class="d-block w-100" src="<%= cloudcaninead.image[1] %>" alt="Second slide">
+        </div>
+        <div class="carousel-item">
+          <img class="d-block w-100" src="<%= cloudcaninead.image[2] %>" alt="Third slide">
+        </div>
+      </div>
+      <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+    <div class="caption-full">
+      <h4 class="pull-right"> £ <%= cloudcaninead.price %></h4>
+      <p>Title: <%= cloudcaninead.title %></p>
+      <p>Listing: <%= cloudcaninead.subCategory %></p>
+      <p>Description: <%= cloudcaninead.description %></p>
+      <p>
+        <em>Posted by:
+          <a href="/users/<%= cloudcaninead.author.id %>"><%= cloudcaninead.author.username %></a>,
+          <%= moment(cloudcaninead.createdAt).fromNow() %>
+        </em>
+      </p>
+      <% if(currentUser && cloudcaninead.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin){ %>
+      <a class="btn btn-warning" href="/cloudcanineads/<%= cloudcaninead._id %>/edit">Edit</a>
+      <form action="/cloudcanineads/<%= cloudcaninead._id %>?_method=DELETE" method="POST" class="delete-form">
+        <button class="btn btn-danger">Delete</button>
+      </form>
+      <% } %>
+    </div>
+  </div>
+
+  <!-- Start of extra advert info-->
+
+  <div class="thumbnail" class="collapse">
+    <a href="#demo" data-toggle="collapse"> More information </a>
+    <div id="demo" class="collapse">
+      <div class="caption-full">
+        <p><%= 'Title: ' + cloudcaninead.title %></p>
+        <p><%= 'Sex: ' +  cloudcaninead.sex %></p>
+        <p><%= 'Body-Type: ' + cloudcaninead.colour %></p>
+        <p><%= 'Cake Day: ' + cloudcaninead.birthdate %></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- end of extra advert info-->
+  <!-- Review Section Start -->
+
+  <div class="thumbnail">
+    <div class="caption-full">
+      <% if (cloudcaninead.rating === 0) { %>
+      <h5>
+        <em>Reviews not posted</em>
+      </h5>
+      <% } else { %>
+      <p>
+        <span class="fa fa-star checked"></span>
+        <span class="fa fa-star <% if (cloudcaninead.rating > 1.5) { %> checked <% } %>"></span>
+        <span class="fa fa-star <% if (cloudcaninead.rating > 2.5) { %> checked <% } %>"></span>
+        <span class="fa fa-star <% if (cloudcaninead.rating > 3.5) { %> checked <% } %>"></span>
+        <span class="fa fa-star <% if (cloudcaninead.rating > 4.5) { %> checked <% } %>"></span>
+        <em>(total reviews: <%= cloudcaninead.reviews.length %>)</em>
+      </p>
+      <p>
+        Overall Rating given by Cloud Canine members: <strong><%= cloudcaninead.rating.toFixed(2) %></strong>
+      </p>
+      <p>
+        <h4> Most recent reviews added:</h4>
+      </p>
+      <hr style="margin-top: 0;">
+      <% cloudcaninead.reviews.slice(0, 5).forEach(function(review){ %>
+      <div class="row">
+        <div class="col-md-3">
+          <%- '<span class="fa fa-star checked"></span>'.repeat(review.rating) %><%- '<span class="fa fa-star"></span>'.repeat(5 - review.rating) %>
+          <div>Review by: <strong><%= review.author.username %></strong></div>
+          <span><em><%= review.updatedAt.toDateString() %></em></span>
+        </div>
+        <div class="col-md-9">
+          <p style="text-align: justify; word-wrap: break-word;">
+            <%= review.text %>
+          </p>
+          <% if(currentUser && review.author.id.equals(currentUser._id)){ %>
+          <a class="btn btn-xs btn-warning" href="/cloudcanineads/<%=cloudcaninead._id %>/reviews/<%=review._id %>/edit">Edit</a>
+          <form id="delete-form" action="/cloudcanineads/<%=cloudcaninead._id %>/reviews/<%=review._id %>?_method=DELETE"
+            method="POST">
+            <input type="submit" class="btn btn-xs btn-danger" value="Delete">
+          </form>
+          <% } %>
+        </div>
+      </div>
+      <hr>
+      <% }); %>
+      <div style="margin-bottom: 10px;">
+        <h4><a href="/cloudcanineads/<%= cloudcaninead._id %>/reviews"><i class="fa fa-search" aria-hidden="true"></i> See all
+            reviews</a></h4>
+      </div>
+      <% } %>
+      <div class="mb-2">
+        <a class="btn btn-primary btn-lg <% if (currentUser && cloudcaninead.reviews.some(function (review) {return review.author.id.equals(currentUser._id)})) { %> disabled <% } %>"
+          role="button" data-toggle="collapse" href="#collapseReview" aria-expanded="false"
+          aria-controls="collapseReview">
+          Write a new review</a>
+      </div>
+      <div class="collapse" id="collapseReview">
+        <div class="well" style="border-left: 5px solid #00C851;">
+          <% if(!currentUser) { %>
+          <!--If the user is not logged in, direct him to the login page-->
+          <h5>You need to login before you can add review. <a href="/login">Click here</a> to go to the login page.</h5>
+          <% } %>
+          <% if(currentUser) { %>
+          <!--If the user is logged in, show the new questionforum form-->
+          <h4>Write your review <span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></h4>
+          <% include ../reviews/new %>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--COMMENT SECTION START-->
+  <div class="well">
+    <!--Setting up the add new questionforum button that is used for collapsing-->
+    <div class="text-right">
+      <a class="btn btn-success pull-right" role="button" data-toggle="collapse" href="#collapseComment"
+        aria-expanded="false" aria-controls="collapseComment">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Ask a question</a>
+    </div>
+
+    <!--Comment section title-->
+    <h4><strong> Questions and Answers <span class="glyphicon glyphicon glyphicon-questionforum"
+          aria-hidden="true"></span></strong></h4>
+
+    <!--Collapse Add a questionforum form START-->
+    <div class="collapse" id="collapseComment">
+      <div class="well" style="border-left: 5px solid #00C851;">
+        <% if(!currentUser) { %>
+        <!--If the user is not logged in, direct him to the login page-->
+        <h5>You need to login before you can ask public a question. <a href="/login">Click here</a> to go to the login
+          page.</h5>
+        <% } %>
+        <% if(currentUser) { %>
+        <!--If the user is logged in, show the new questionforum form-->
+        <h4>Write your question <span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></h4>
+        <form id="add-questionforum-form" action="/cloudcanineads/<%= cloudcaninead._id %>/comments" method="POST">
+          <div class="form-group">
+            <input class="form-control" type="text" disabled value="<%= currentUser.username %>">
+          </div>
+          <div class="form-group">
+            <textarea class="form-control" name="questionforum[text]" placeholder="Write your question..."
+              form="add-questionforum-form" rows="5" cols="70"></textarea>
+          </div>
+          <div class="form-group">
+            <button class="btn btn-success btn-sm">Submit <span class="glyphicon glyphicon-questionforum"
+                aria-hidden="true"></span></button>
+          </div>
+        </form>
+        <% } %>
+      </div>
+    </div>
+
+    <!--Collapse Add a questionforum form END-->
+    <hr>
+
+    <!--Check if there are questionsforum, if there are none say no questionsforum.-->
+    <% if (cloudcaninead.questionsforum.length === 0) { %>
+    <em style="color: grey;">Be the first to leave a comment.</em>
+    <% } %>
+
+    <!--Display questionsforum by looping through them-->
+    <% cloudcaninead.questionsforum.forEach(function(questionforum) { %>
+    <div class="row">
+      <div class="col-md-12">
+        <strong>
+          <% if (currentUser && currentUser._id.equals(questionforum.author.id)) { %>
+
+          <!--If the current user owns the questionforum, change the color of the user icon-->
+          <span style="color: orange;" class="glyphicon glyphicon-user" aria-hidden="true"></span>
+          <% } else { %>
+
+          <!--Else just display it black-->
+          <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+          <% } %>
+
+          <!--Print out the author username-->
+          <%= questionforum.author.username %>
+        </strong>
+
+        <!--Show when the questionforum was made-->
+        <span class="pull-right"><%= moment(questionforum.createdAt).fromNow() %></span>
+
+        <!--Printing the questionforum-->
+        <p><%= questionforum.text %></p>
+
+        <!--If the visitor is logged in and the owner of the questionforum, show the edit and delete buttons-->
+        <% if (currentUser && currentUser._id.equals(questionforum.author.id)) { %>
+
+        <!--Edit button used for collapsing the edit questionforum form-->
+        <a class="btn btn-xs btn-warning" role="button" data-toggle="collapse" href="#collapseEdit<%= questionforum._id %>"
+          aria-expanded="false" aria-controls="collapse<%= questionforum._id %>">
+          Edit</a>
+
+        <!--Delete questionforum button-->
+        <form id="delete-form" action="/cloudcanineads/<%= cloudcaninead._id %>/comments/<%= questionforum._id %>?_method=DELETE"
+          method="POST" style="display: inline;">
+          <button class="btn btn-xs btn-danger">Delete</button>
+        </form>
+
+        <!--Edit questionforum form-->
+        <div class="collapse" id="collapseEdit<%= questionforum._id %>">
+          <div class="" style="border-left: 5px solid #ffbb33; margin-top: 15px;">
+            <h4>Edit your questionforum <span class="glyphicon glyphicon-edit" aria-hidden="true"></span></h4>
+            <form id="edit-questionforum-form<%= questionforum._id %>"
+              action="/cloudcanineads/<%= cloudcaninead._id %>/comments/<%= questionforum._id %>?_method=PUT" method="POST">
+              <div class="form-group">
+                <input class="form-control" type="text" disabled value="<%= currentUser.username %>">
+              </div>
+              <div class="form-group">
+                <textarea class="form-control" name="questionforum[text]" placeholder="Your questionforum text..."
+                  form="edit-questionforum-form<%= questionforum._id %>" rows="5" cols="70"><%= questionforum.text %></textarea>
+              </div>
+              <div class="form-group">
+                <button class="btn btn-warning btn-sm">Edit Question <span class="glyphicon glyphicon-questionforum"
+                    aria-hidden="true"></span></button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <% } %>
+        <hr>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+  <!--COMMENT SECTION END-->
+
+</div>
+<div class="row">
+  <div class="col-md-20">
+    <div class="list-group horizontal-menu">
+      <li class="list-group-item active">
+        <a style="color: white" href="/cloudcanineads/<%= cloudcaninead._id %>">
+          <span class="glyphicon glyphicon-car"></span> Listing
+        </a>
+      </li>
+      <li class="list-group-item not-active">
+        <a href="/users/<%= cloudcaninead.author.id %>">
+          <span class="glyphicon glyphicon-user"></span> Advertiser Profile
+        </a>
+      </li>
+    </div>
+
+    <div class="card shadow-sm mt-3">
+      <div id="map"></div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><i class="fas fa-map-marker-alt"></i>
+          Location: <%= cloudcaninead.location %>
+        </li>
+      </ul>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col">
+        <div class="list-group horizontal-menu">
+          <li class="list-group-item active">
+            <div id="contactform">
+
+              <!--Section: Contact v.2-->
+              <section class="mb-10">
+                <h2 class="h4-responsive text-center my-3">Contact Advertiser</h3>
+                  <hr>
+                  <p class="text-center w-responsive mx-auto mb-5">Do you have any questions? Please get in touch with
+                    the advertiser to get more information</p>
+                    <div class="row">
+                    <div class="col-md-12 mb-md-2 mb-5">
+                      <form id="contact-form" name="contact-form" action="/contactform" method="POST">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="md-form mb-0">
+                              <label for="name" class="">Your name</label>
+                              <input type="text" id="name" name="name" class="form-control">
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="md-form mb-0">
+                              <label for="email" class="">Your email</label>
+                              <input type="text" id="email" name="email" class="form-control">
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="md-form mb-0">
+                              <label for="to" class="">to</label>
+                              <input type="text" id="to" name="to" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="md-form mb-0">
+                              <label for="subject" class="">Subject</label>
+                              <input type="text" id="subject" name="subject" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="md-form">
+                              <label for="message">Your message</label>
+                              <textarea type="text" id="message" name="message" rows="2"
+                                class="form-control md-textarea"></textarea>
+                            </div>
+                          </div>
+                        </div>
+                        <br>
+                        <div class="text-center text-md-left">
+                          <button type="button" class="btn btn-success">Send</button>
+                      </form>
+                    </div>
+                  </div>
+              </section>
+          </li>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    /* **************************************************************************************
+        *    Title: Google Maps documentation for placing markers
+        *    Availability:  https://developers.google.com/maps/documentation/javascript/markers
+        ***************************************************************************************/
+
+    function createMap() {
+      var lat = <%= cloudcaninead.lat %>;
+      var lng = <%= cloudcaninead.lng %>;
+      var center = { lat: lat, lng: lng };
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 10,
+        center: center,
+        scrollwheel: true
+
+      });
+      var contentString = `
+                              <strong><%= cloudcaninead.name %><br />
+                              <%= cloudcaninead.location %></strong>
+                                  `
+      var infowindow = new google.maps.InfoWindow({
+        content: contentString
+      });
+      var marker = new google.maps.Marker({
+        position: center,
+        map: map
+      });
+      marker.addListener('click', function () {
+        infowindow.open(map, marker);
+      });
+    }
+
+
+  </script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVttfQcWZFB88AXagI65cQtp_c4f_Az3U&callback=createMap"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <% include ../partials/footer %>
