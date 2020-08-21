@@ -49,7 +49,6 @@ I learned many things during this project to name a few:
 <li>and more...</li>
 </ul>
 
-
 ## The steps to test this feature out include: 
 
 Create two users.
