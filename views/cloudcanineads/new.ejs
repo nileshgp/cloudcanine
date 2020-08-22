@@ -4,14 +4,38 @@
 
 input[type=text], select, textarea {
   width: 100%;
-  padding: 12px;
+  padding: 6px 12px;
   border: 1px solid #ccc;
   border-radius: 4px;
   resize: vertical;
 }
 h2 {
   display: inline;
-  background-color: skyblue  }
+  background-color: skyblue  
+}
+
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.btn-upload {
+  border: 2px solid lightgray;
+  background-color: white;
+  padding: 5px 8px;
+  border-radius: 4px;
+}
+
+.upload-btn-wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+
 
 </style>
 
@@ -22,9 +46,10 @@ h2 {
             <form action="/cloudcanineads" method="POST" enctype="multipart/form-data">
             <hr>
             <div class="form-group">
+              <label for="categoryName">Choose a Category:</label>
               <div class="input-group-prepend" id="inputGroup-sizing-large">
-                <select class="form-control" id="categoryName" name="categoryName" onchange="onCategoryChange(this)" required>
-                  <option>select the category that best matches your listing</option>
+                <select class="form-control h-100" id="categoryName" name="categoryName" onchange="onCategoryChange(this)" required>
+                  <option>Please select a category</option>
                     <%for(let [name, value] of Object.entries(categoryData)){%>
                     <% if(value.show == true ) { %>
                   <option value="<%= name %>"><%= name %></option>
@@ -33,14 +58,15 @@ h2 {
                 </select>
               </div>
               <br>
-              <select class="form-control" id="subcategoryName" name="subcategoryName" required>
-                <option> Choose under what sub-category </option>
+              <label for="subcategoryName">Select:</label>
+              <select class="form-control h-100" id="subcategoryName" name="subcategoryName" required>
+                <option> Sub category </option>
               </select>
               <br>
             <!-- START OF MORE DETAILS FOR DOG CATEGORY -->
               <div class="form-group">
-                <select class="form-control" id="seeAnotherFieldGroup">
-                  <label for="details">Do you want to add details? </label>
+                <label for="seeAnotherFieldGroup">Do you want to add gender and colour?</label>
+                <select class="form-control h-100" id="seeAnotherFieldGroup">
                       <option value="no">No</option>
                       <option value="Yes">Yes </option>
                 </select>
@@ -48,14 +74,16 @@ h2 {
               <div class="form-group" id="otherFieldGroupDiv">
                 <div class="row">
                   <div class="col-6">
-                    <select class="form-control" name = sex id="otherField1" >
+                    <label for="otherField1">Sex</label>
+                    <select name = sex id="otherField1" >
                         <option value= "new "> Male </option>
                         <option value= "used"> Female </option>  
                     </select> <br>
                   </div>
                   <br>
                   <div class="col-6">
-                    <select class="form-control" name = colour id="otherField4" >
+                    <label for="otherField4">Colour</label>
+                    <select  name = colour id="otherField4" >
                       <option> Black </option> 
                       <option> Blue </option>
                       <option> Brown </option> 
@@ -67,24 +95,30 @@ h2 {
                       <option> Yellow </option>     
                     </select>
                     </div>
-                  <div class="col-6">
-                    <input type="date" class="form-control w-100"  placeholder = "Date of birthdate Expiry" name = birthdate id="otherField6">
-                  </div>
                 </div>
               </div>
               <!-- END OF MORE DETAILS FOR DOG CATEGORY CATEGORY -->
               <div class="form-group">
+                <label for="title">Post Title:</label>
                 <input class="form-control" type="text" id="title" abbr title="this field is required"  name="title" placeholder = "Title" required> %>
               </div>
-              <div class="form-group"> 
-                <input class="form-control" type="file" id="image" abbr title="this field is required" placeholder="You can add 5 photos for free" name="image" accept="image/*" required multiple>
-              </div> 
+              <label for="upload-image">Upload upto 5 images</label>
               <div class="form-group">
-                <textarea  placeholder="Add information about the advert ..."  abbr title="this field is required" class="form-control controls" rows="6" col="3" type="text" name="description" id="description"  required> </textarea>
+                <div class="upload-btn-wrapper" id="upload-image">
+                  <button class="btn-upload"><i class="fas fa-upload"></i> Upload images</button>
+                  <input type="file" id="image" abbr title="this field is required" placeholder="You can add 5 photos for free" name="image" accept="image/*" required multiple />
+                </div>
+                <!-- <input class="form-control" type="file" id="image" abbr title="this field is required" placeholder="You can add 5 photos for free" name="image" accept="image/*" required multiple> -->
               </div>
+              <label for="description">For an effective post be as detailed as possible:</label>
+              <div class="form-group">
+                <textarea placeholder="Add information about the advert ..."  abbr title="this field is required" class="form-control controls" rows="6" col="3" type="text" name="description" id="description"  required> </textarea>
+              </div>
+              <label for="location">Enter Location:</label>
               <div class="form-group">
                 <input id="location" class="form-control controls" type="text" abbr title="this field is required"  name="location"  placeholder="Enter a location here" required>
               </div>
+              <label for="price">Price in £:</label>
               <div class="form-group">
                 <input class="form-control" type="number" name="price" id="price" placeholder="Enter a price here" step="1.00" required>
               </div>

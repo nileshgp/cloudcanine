@@ -48,6 +48,7 @@
               <li class="nav navbar-nav navbar-auto">
               <a class="nav-link" href="/cloudcanineads/new"><i class="fas fa-plus"></i> Post a new listing </a>
               </li>
+              <!-- changed new to  here!!!! -->
             <% if(!currentUser){ %>
               <li class="nav-item <%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>">
                 <a href="/login" class="nav-link"><i class="fas fa-sign-in-alt"></i> Login</a>

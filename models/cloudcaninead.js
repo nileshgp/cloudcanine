@@ -40,8 +40,8 @@ const cloudcanineDBSchema = new mongoose.Schema({
 	sex: String,
 	mileage: String,
 	transmission: String,
-	colour: String,
-	birthdate: Date
+	colour: String
+	// birthdate: Date
 });
 
 cloudcanineDBSchema.plugin(mongoosePaginate);

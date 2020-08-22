@@ -44,13 +44,19 @@ module.exports = {
 				'Sheepdog',
 				'Shihtzu',
 				'Yorkshire Terrier',
-				'Other'
+				'Other (write in description)'
 			],
 			show: true
 		},
 		Events: {
 			id: 2,
-			subCat: [ 'Dog Show', 'Exhibitions' ],
+			subCat: [
+				'Dog Show (Agility)',
+				'Dog Show (Training/Agilty)',
+				'Dog Show (Grooming)',
+				'Exhibitions',
+				'Meet-ups'
+			],
 			show: true
 		},
 		Services: {

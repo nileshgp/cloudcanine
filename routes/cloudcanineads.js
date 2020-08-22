@@ -176,7 +176,7 @@ router.post('/', middleware.isLoggedIn, upload.array('image', 5), async function
 		sex = reqBody.sex,
 		mileage = reqBody.mileage,
 		transmission = reqBody.transmission,
-		birthdate = reqBody.birthdate,
+		// birthdate = reqBody.birthdate,
 		colour = reqBody.colour;
 
 	// =================================================================
@@ -238,7 +238,7 @@ router.post('/', middleware.isLoggedIn, upload.array('image', 5), async function
 			sex: sex,
 			mileage: mileage,
 			transmission: transmission,
-			birthdate: birthdate,
+			// birthdate: birthdate,
 			colour: colour
 		};
 		try {
@@ -325,7 +325,6 @@ router.get('/new', middleware.isLoggedIn, function(req, res) {
 	let CategoryMapping = ModelConfig['CategoryMapping'] || {};
 	res.render('cloudcanineads/new', { categoryData: CategoryMapping });
 });
-
 // =================================================================
 // SHOW page - shows more info about a specific cloudcaninead
 // =================================================================
